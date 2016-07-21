@@ -26,3 +26,10 @@ $factory->define(App\Article::class, function (Faker\Generator $faker) {
         //'reads' => $faker->numberBetween(100,500)
     ];
 });
+
+$factory->define(App\Team::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->sentence,
+        'size' => 5
+    ];
+});
