@@ -25,11 +25,8 @@ class Team extends Model
      */
     public function add($user)
     {
-
         $this->guardAgainsTooManyMembers();
-
         $method = $user instanceof User ? 'save' : 'saveMany';
-
         $this->members()->$method($user);
     }
 
