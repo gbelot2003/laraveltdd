@@ -50,20 +50,36 @@ class Team extends Model
 
 
     /**
-     * remove one user from team
-     * @param User $user
+     * @param null $users
+     * @return mixed
      */
-    public function remove(User $user)
+    public function remove($users = null)
     {
-        $user->leaveTeam();
+        if($users instanceof User){
+         return  $users->leaveTeam();
+        }
+
+        return $this->removeMany($users);
     }
+
+    /**
+     * @param $users
+     */
+    public function removeMany($users)
+    {
+        return $this->members()
+            ->whereIn('id', $users->pluck('id'))
+            ->update(['team_id' => null]);
+    }
+
 
     /**
      * Restart to 0 team users
      */
     public function restart()
     {
-        return $this->members()->update(['team_id' => null]);
+        return $this->members()
+            ->update(['team_id' => null]);
     }
 
 
@@ -72,7 +88,7 @@ class Team extends Model
      */
     protected function guardAgainsTooManyMembers()
     {
-        if ($this->count() >= $this->size)
+        if ($this->membersCount() >= $this->size)
         {
             throw new \Exception;
         }

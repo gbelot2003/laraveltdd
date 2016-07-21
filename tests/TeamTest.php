@@ -24,7 +24,7 @@ class TeamTest extends TestCase
         $team = factory(Team::class)->create();
         $users = factory(User::class, 2)->create();
         $team->add($users);
-        $this->assertEquals(2, $team->count());
+        $this->assertEquals(2, $team->membersCount());
     }
 
     /** @test */
@@ -38,7 +38,7 @@ class TeamTest extends TestCase
         $team->add($user);
         $team->add($user2);
 
-        $this->assertEquals(2, $team->count());
+        $this->assertEquals(2, $team->membersCount());
     }
 
     /** @test */
@@ -50,14 +50,13 @@ class TeamTest extends TestCase
         $user2 = factory(User::class)->create();
         $user3 = factory(User::class)->create();
 
-
         $team->add($user);
         $team->add($user2);
 
         $this->setExpectedException('Exception');
 
         $team->add($user3);
-        $this->assertEquals(2, $team->count());
+        $this->assertEquals(2, $team->membersCount());
 
     }
 
@@ -78,9 +77,20 @@ class TeamTest extends TestCase
         $team = factory(Team::class)->create();
         $users = factory(User::class, 2)->create();
         $team->add($users);
-
         $team->restart();
         $this->assertEquals(0, $team->membersCount());
+    }
+
+    /** @test */
+    public function a_team_can_remove_more_than_one_member_ar_once()
+    {
+        $team = factory(Team::class)->create(['size' => 3]);
+        $users = factory(User::class, 3)->create();
+        $team->add($users);
+
+        $team->remove($users->slice(0, 2));
+        $this->assertEquals(1, $team->membersCount());
+
     }
 
 }
