@@ -5,17 +5,21 @@ use App\Product;
 class ProductTest extends PHPUnit_Framework_TestCase
 {
 
+    protected $product;
+
+    public function setUp()
+    {
+        $this->product = new Product('Fallout 4', 55);
+    }
+
     function testAProductHasName()
     {
-        $product = new Product('Fallout 4', 55);
-        $this->assertEquals('Fallout 4', $product->name());
-
+        $this->assertEquals('Fallout 4', $this->product->name());
     }
 
     function testAProductHasaPrice()
     {
-        $product = new Product('Fallout 4', 55);
-        $this->assertEquals(55, $product->price());
+        $this->assertEquals(55, $this->product->price());
     }
 
 }
